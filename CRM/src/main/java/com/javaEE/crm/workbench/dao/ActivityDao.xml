@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--mybatis配置文件，操作数据库，写sql语句-->
+<mapper namespace="com.javaEE.crm.workbench.dao.ActivityDao">
+
+    <!--删除活动-->
+    <delete id="deleteByIds">
+        delete from tbl_activity
+        where id in
+        <foreach collection="array" open="(" close=")" item="id" separator=",">
+            #{id}
+        </foreach>
+    </delete>
+
+    <!--添加新activity语句-->
+    <insert id="saveActivity">
+        insert into tbl_activity(
+            id,
+            owner,
+            name,
+            startDate,
+            endDate,
+            cost,
+            description,
+            createTime,
+            createBy
+        )
+        values(
+            #{id},
+            #{owner},
+            #{name},
+            #{startDate},
+            #{endDate},
+            #{cost},
+            #{description},
+            #{createTime},
+            #{createBy}
+        )
+    </insert>
+
+    <!--查询activity列表语句-->
+    <select id="getPageList" resultType="Activity">
+        select
+        a.id,
+        a.name,
+        u.name as owner,
+        a.startDate,
+        a.endDate
+        from tbl_activity a
+        join tbl_user u
+        on a.owner=u.id
+        <where>
+            <if test="name!=null and name!=''">
+                a.name like '%' #{name} '%'
+            </if>
+            <if test="owner!=null and owner!=''">
+                and u.name like '%' #{owner} '%'
+            </if>
+            <if test="startDate!=null and startDate!=''">
+                and a.startDate &gt; #{startDate}
+            </if>
+            <if test="endDate!=null and endDate!=''">
+                and a.endDate &lt; #{endDate}
+            </if>
+        </where>
+        order by a.createTime desc
+        limit #{skipCount},#{pageSize}
+    </select>
+
+    <!--查询活动总数-->
+    <select id="getTotal" resultType="int">
+        select
+        count(*)
+        from tbl_activity a
+        join tbl_user u
+        on a.owner=u.id
+        <where>
+            <if test="name!=null and name!=''">
+                a.name like '%' #{name} '%'
+            </if>
+            <if test="owner!=null and owner!=''">
+                and u.name like '%' #{owner} '%'
+            </if>
+            <if test="startDate!=null and startDate!=''">
+                and a.startDate &gt; #{startDate}
+            </if>
+            <if test="endDate!=null and endDate!=''">
+                and a.endDate &lt; #{endDate}
+            </if>
+        </where>
+    </select>
+    
+</mapper>        

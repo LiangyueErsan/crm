@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+
+    <properties resource="jdbc.properties"/>
+
+    <!--mybatis主配置文件-->
+
+    <!--settings：控制mybatis全局行为-->
+    <!--<settings>
+        &lt;!&ndash;设置mybatis输出日志&ndash;&gt;
+        <setting name="logImpl" value="STDOUT_LOGGING"/>
+    </settings>-->
+
+    <!--设置别名-->
+    <typeAliases>
+        <!--name:实体类所在的包名(不是实体类的包名也可以)
+            表示com.javaEE.entity包中的类名就是别名
+            你可以使用Student表示com.com.javaEE.entity.Student
+        -->
+        <package name="com.javaEE.crm.settings.domain"/>
+        <package name="com.javaEE.crm.workbench.domain"/>
+    </typeAliases>
+
+
+    <environments default="development">
+        <environment id="development">
+            <transactionManager type="JDBC"/>
+            <dataSource type="POOLED">
+                <property name="driver" value="${jdbc.driver}"/>
+                <property name="url" value="${jdbc.url}"/>
+                <property name="username" value="${jdbc.username}"/>
+                <property name="password" value="${jdbc.password}"/>
+            </dataSource>
+        </environment>
+    </environments>
+
+    <!-- sql mapper(sql映射文件：UserDao.xml文件)的位置-->
+    <mappers>
+        <!--
+          name：是包名， 这个包中的所有mapper.xml一次都能加载
+          package的要求：1、mapper文件名称和dao接口名完全一致，包括大小写
+                        2、mapper文件名称和dao接口必须在同一目录
+        -->
+        <package name="com.javaEE.crm.settings.dao"/>
+        <package name="com.javaEE.crm.workbench.dao"/>
+    </mappers>
+</configuration>

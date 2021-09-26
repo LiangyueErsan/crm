@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--mybatis配置文件，操作数据库，写sql语句-->
+<mapper namespace="com.javaEE.crm.workbench.dao.ActivityRemarkDao">
+
+    <!--根据id查询活动备注列表-->
+    <select id="getNoteById" resultType="ActivityRemark">
+
+        select * from tbl_activity_remark where activityId=#{id}
+
+    </select>
+
+
+
+    <!--掌握这两个查询语句种foreach的使用!!!!!!!!!!!!!!!!!!!!-->
+    <select id="getCountByIds" resultType="int">
+        select count(*) from tbl_activity_remark
+        where activityId in
+        <foreach collection="array" item="aid" open="(" close=")" separator=",">
+            #{aid}
+        </foreach>
+    </select>
+
+    <delete id="deleteByIds">
+        delete from tbl_activity_remark where activityId in
+        <foreach collection="array" item="id" open="(" close=")" separator=",">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>        
