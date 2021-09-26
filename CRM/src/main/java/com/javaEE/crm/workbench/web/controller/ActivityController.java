@@ -64,7 +64,7 @@ public class ActivityController extends HttpServlet {
     }
 
     private void getNote(HttpServletRequest request, HttpServletResponse response) {
-        System.out.println("进入获取备注信息页面！");
+        System.out.println("进入获取备注信息页面123！");
         ActivityService activityService = (ActivityService) ServiceFactory.getService(new ActivityServiceImpl());
 
         //获取前端传值id
